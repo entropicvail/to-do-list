@@ -1,56 +1,28 @@
-function addCheckbox() {
-  const inputValue = document.getElementById('toDoInput').value.trim();
-  if (inputValue === '') {
-      alert('Please enter a "To-do" item.');
-      return;
-  }
+let catchTaskClick = document.querySelector('#addTaskBtn');
+let userInput = document.querySelector('#taskInput');
+let todoContainer = document.getElementById('todoContainer');
+let doneContainer = document.getElementById('doneContainer');
+let count = 0;
 
-  const checkboxArea = document.getElementById('checkboxArea');
-  const checkboxId = `checkbox_${Date.now()}`; // Unique ID for each checkbox button and its label
+catchTaskClick.addEventListener("click", () => addTaskDiv(userInput.value));
 
-  // Create input element
-  const input = document.createElement('input');
-  input.type = 'checkbox';
-  input.id = checkboxId;
-  input.name = 'dynamicOptions'; // All must share the same name
-  input.value = inputValue;
+// Need to add listener to grab clicked divs
+newDiv.addEventListener('click', moveCompletedTasks(newDiv.id));
 
-  // Create label element and link it to the input
-  const label = document.createElement('label');
-  label.htmlFor = checkboxId;
-  label.textContent = inputValue;
-
-  // Append input and label (wrapped in a div for layout) to the container
-  const wrapper = document.createElement('div');
-  wrapper.appendChild(input);
-  wrapper.appendChild(label);
-  checkboxArea.appendChild(wrapper);
-
-  localStorage.setItem(JSON.stringify(checkboxId), wrapper);
-
-  importLocalStorageToDiv(checkboxId);
-
-  // Clear input field
-  document.getElementById('toDoInput').value = '';
+const addTaskDiv = (input) => {
+  let newDiv = document.createElement('div');
+  newDiv.id = `${count}:${input}`;
+  newDiv.innerHTML = `${count}: ${input}`;
+  todoContainer.appendChild(newDiv);
+  count++;
+  userInput.value = '';
 }
 
-function importLocalStorageToDiv() {
-  const storedValues = Object.keys(localStorage);
-  const displayDiv = document.getElementById('checkboxArea');
-  if (storedValues) {
-    displayDiv.innerHTML = storedValues;
-    console.log("Content loaded from localStorage.");
-  } else {
-    displayDiv.innerHTML = "No saved content found in localStorage.";
-    console.log("No content to load.");
-  }
-}
-
-window.onload = function() {
-  importLocalStorageToDiv()
-}
-
-function clearToDo() {
-  localStorage.clear();
-  console.log('localStorage cleared...')
-}
+const moveCompletedTasks = (taskToMove) => {
+  let taskParent = taskToMove.parentElement.nodeName;
+  console.log(`newDivId is -> ${taskToMove}`)}
+//   if ( taskParent === 'todoContainer' ) { doneContainer.appendChild(taskToMove);
+//   } else {
+//     todoContainer.appendChild(taskToMove)
+//   }
+// }
